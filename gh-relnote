@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# gh relnote — conventional-commit release notes for `gh`, from local git history.
+# Bundles relnote (https://github.com/loki-inu/relnote). Needs python3 (3.11+) and git.
+set -euo pipefail
+
+here="$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")" && pwd)"
+py="${PYTHON:-python3}"
+
+relnote() { PYTHONPATH="$here${PYTHONPATH:+:$PYTHONPATH}" "$py" -m relnote "$@"; }
+
+usage() {
+  cat <<'END_USAGE'
+gh relnote — release notes from conventional commits, without the GitHub API.
+
+USAGE
+  gh relnote [relnote flags]                 print notes for latest tag..HEAD
+  gh relnote create TAG [gh flags] [-- relnote flags]
+                                             create a GitHub Release whose body
+                                             is relnote's output
+
+EXAMPLES
+  gh relnote
+  gh relnote --since v1.2.0 --no-bots
+  gh relnote create v1.3.0 --draft
+  gh relnote create v1.3.0 --title "v1.3.0" -- --no-bots --max 50
+
+`create` passes TAG and any flags before `--` to `gh release create`
+(for example --draft, --prerelease, --title, --target, asset files).
+Flags after `--` go to relnote. The notes range is computed before the
+new tag exists, so it covers latest tag → HEAD unless you pass --since.
+
+Run `gh relnote --help` for every relnote flag.
+END_USAGE
+}
+
+case "${1:-}" in
+  create)
+    shift
+    [ $# -ge 1 ] || { echo "gh relnote: create needs a TAG" >&2; exit 2; }
+    gh_args=(); rn_args=()
+    while [ $# -gt 0 ]; do
+      if [ "$1" = "--" ]; then shift; rn_args=("$@"); break; fi
+      gh_args+=("$1"); shift
+    done
+    notes="$(mktemp)"; trap 'rm -f "$notes"' EXIT
+    relnote --output "$notes" --quiet ${rn_args[@]+"${rn_args[@]}"}
+    exec gh release create "${gh_args[@]}" --notes-file "$notes"
+    ;;
+  help|-h|--usage)
+    usage
+    ;;
+  *)
+    relnote "$@"
+    ;;
+esac
