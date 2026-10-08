@@ -84,6 +84,20 @@ class ExtensionTest(unittest.TestCase):
         self.assertIn("handle commas", text)
         self.assertNotIn("add sync", text)
 
+    def test_create_can_update_changelog(self):
+        bindir = Path(self.tmp.name) / "bin"
+        bindir.mkdir()
+        fake = bindir / "gh"
+        fake.write_text("#!/usr/bin/env bash\nexit 0\n")
+        fake.chmod(0o755)
+        env = dict(os.environ, PATH=f"{bindir}{os.pathsep}{os.environ['PATH']}")
+        out = self.run_script("create", "v1.1.0", "--", "--changelog", "CHANGELOG.md",
+                              "--changelog-title", "v1.1.0", "--date", "2026-10-08", env=env)
+        self.assertEqual(out.returncode, 0, out.stderr)
+        text = (self.repo / "CHANGELOG.md").read_text()
+        self.assertIn("## [v1.1.0] - 2026-10-08", text)
+        self.assertIn("add sync", text)
+
 
 if __name__ == "__main__":
     unittest.main()
