@@ -30,6 +30,7 @@ Range: `v1.0.0` → `HEAD`.
 ```bash
 gh relnote create v1.3.0 --draft
 gh relnote create v1.3.0 --title "v1.3.0" -- --no-bots --max 50
+gh relnote create v1.3.0 -- --changelog CHANGELOG.md --changelog-title v1.3.0   # also prepend to CHANGELOG.md
 ```
 
 `create` runs relnote for latest tag → `HEAD`, then calls `gh release create TAG ... --notes-file <notes>`. Everything before `--` goes to `gh release create` (`--draft`, `--prerelease`, `--title`, `--target`, asset files). Everything after `--` goes to relnote.
@@ -55,7 +56,7 @@ Grouping follows Conventional Commits: `feat` → Features, `fix` → Fixes, `ty
 
 ## How it works
 
-This extension bundles [relnote](https://github.com/loki-inu/relnote) (v0.1.5), a zero-dependency Python CLI that's also available as a GitHub Action. Use relnote directly if you don't use `gh`.
+This extension bundles [relnote](https://github.com/loki-inu/relnote) (v0.2.0), a zero-dependency Python CLI that's also available as a GitHub Action. Use relnote directly if you don't use `gh`.
 
 ## License
 
