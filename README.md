@@ -29,6 +29,7 @@ Range: `v1.0.0` → `HEAD`.
 
 ```bash
 gh relnote create v1.3.0 --draft
+gh relnote create "$(gh relnote --next-version)"     # let relnote pick the tag (feat → minor, fix → patch)
 gh relnote create v1.3.0 --title "v1.3.0" -- --no-bots --max 50
 gh relnote create v1.3.0 -- --changelog CHANGELOG.md --changelog-title v1.3.0   # also prepend to CHANGELOG.md
 ```
@@ -41,6 +42,8 @@ gh relnote create v1.3.0 -- --changelog CHANGELOG.md --changelog-title v1.3.0   
 gh relnote                          # latest tag → HEAD
 gh relnote --since v1.2.0 --no-bots
 gh relnote --output notes.md --quiet
+gh relnote --next-version           # e.g. v1.4.0
+gh relnote --path packages/api --tag-prefix api/v   # one package in a monorepo
 gh relnote --help                   # every flag
 ```
 
@@ -56,7 +59,7 @@ Grouping follows Conventional Commits: `feat` → Features, `fix` → Fixes, `ty
 
 ## How it works
 
-This extension bundles [relnote](https://github.com/loki-inu/relnote) (v0.2.0), a zero-dependency Python CLI that's also available as a GitHub Action. Use relnote directly if you don't use `gh`.
+This extension bundles [relnote](https://github.com/loki-inu/relnote) (v0.3.0), a zero-dependency Python CLI that's also available as a GitHub Action. Use relnote directly if you don't use `gh` (`brew install loki-inu/tap/relnote` or pip).
 
 ## License
 
