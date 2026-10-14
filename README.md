@@ -2,6 +2,8 @@
 
 A [GitHub CLI](https://cli.github.com/) extension that turns your conventional commits into a GitHub Release body, from local git history. No API calls to build the notes, no config file.
 
+Listed in [awesome-gh-extensions](https://github.com/myzkey/awesome-gh-extensions) (auto-updated list of repositories with the `gh-extension` topic).
+
 ```bash
 gh extension install loki-inu/gh-relnote
 gh relnote
