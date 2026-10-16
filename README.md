@@ -61,7 +61,7 @@ Grouping follows Conventional Commits: `feat` → Features, `fix` → Fixes, `ty
 
 ## How it works
 
-This extension bundles [relnote](https://github.com/loki-inu/relnote) (v0.3.0), a zero-dependency Python CLI that's also available as a GitHub Action. Use relnote directly if you don't use `gh` (`brew install loki-inu/tap/relnote` or pip).
+This extension bundles [relnote](https://github.com/loki-inu/relnote) (v0.3.1), a zero-dependency Python CLI that's also available as a GitHub Action. Use relnote directly if you don't use `gh` (`brew install loki-inu/tap/relnote` or pip).
 
 ## License
 
